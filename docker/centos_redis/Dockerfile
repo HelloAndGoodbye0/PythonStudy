@@ -15,9 +15,8 @@ RUN yum clean all \
 ENV redis_version=6.0.8
 RUN wget http://download.redis.io/releases/redis-${redis_version}.tar.gz \
     && tar xzf redis-${redis_version}.tar.gz \
-    && cd redis-${redis_version} && make \
-    && cp src/redis-server /usr/local/bin/  \
-    && cp src/redis-cli /usr/local/bin/
+    && cd redis-${redis_version} && make install 
+
 
     
 # 后台运行
