@@ -2,7 +2,7 @@
 Author: lee 497232807@qq.com
 Date: 2025-08-27 09:45:50
 LastEditors: lee 497232807@qq.com
-LastEditTime: 2025-09-02 09:13:28
+LastEditTime: 2025-10-14 14:07:08
 FilePath: \多语言xml翻译\translateXls.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -33,27 +33,29 @@ def translateXls(xlsFile,translator):
     
     #获取第一行第三列后面的数据
     firstRow = df.iloc[0]
-    languages = firstRow.index[4:]
+    languages = firstRow.index[3:]
         
     # #遍历每一行第三列数据(en字符串)
     for index, row in df.iterrows():
-        en_value = row[3]
-        code = row[0]
-        print(f"translate:{en_value}")
+        zh_value = row.iloc[2]
+        code = row.iloc[0]
+        print(f"translate:{zh_value}")
         for lan in languages:
-            # print(lan)
-            tolan = lan.split(".")[0].strip() 
-            #去掉字符串中的空格
-            if tolan in lanMap:
-                tolan = lanMap[tolan]
-            #特殊不翻译 使用en
-            if(code.startswith("name_") or code.startswith("language_")):
-                 translate_value = en_value
-            else:
-                 translate_value = translate(en_value, "en", tolan,translator)
-            print(f"\t{tolan}:{translate_value}")
-            #写入到对应的cell中
-            df.at[index, lan] = translate_value
+            #判断df.at[index, lan]中是否为空
+            if pd.isna(df.at[index, lan]):
+                # print(lan)
+                tolan = lan.split(".")[0].strip() 
+                #去掉字符串中的空格
+                if tolan in lanMap:
+                    tolan = lanMap[tolan]
+                #特殊不翻译 使用en
+                if(code.startswith("name_") or code.startswith("language_")):
+                    translate_value = zh_value
+                else:
+                    translate_value = translate(zh_value, "zh", tolan,translator)
+                print(f"\t{tolan}:{translate_value}")
+                #写入到对应的cell中
+                df.at[index, lan] = translate_value
     
     column_mapping = {col: col.split('.')[0] for col in df.columns}
     df.rename(columns=column_mapping, inplace=True)
