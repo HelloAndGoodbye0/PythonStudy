@@ -48,6 +48,9 @@ def translateXls(xlsFile,translator):
                 #写入到对应的cell中
                 df.at[index, lan] = translate_value
     
+        #翻译一行就保存数据
+        df.to_excel(xlsFile,engine="openpyxl",index=False)
+        
     column_mapping = {col: col.split('.')[0] for col in df.columns}
     df.rename(columns=column_mapping, inplace=True)
     df.to_excel(xlsFile,engine="openpyxl",index=False)
