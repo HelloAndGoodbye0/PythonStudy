@@ -14,8 +14,8 @@ lanMap = {
     "es_mx":"es",
 }
 #翻译文本
-def translate(text, fromLan,toLan,translator):
-    res = ts.translate_text(text,translator=translator,from_language=fromLan,to_language=toLan)
+def translate(text,toLan,translator):
+    res = ts.translate_text(text,translator=translator,to_language=toLan)
     return res
 
 #翻译xls 
@@ -40,11 +40,10 @@ def translateXls(xlsFile,translator):
                 #去掉字符串中的空格
                 if tolan in lanMap:
                     tolan = lanMap[tolan]
-                #特殊不翻译 使用en
-                if(code.startswith("name_") or code.startswith("language_")):
-                    translate_value = zh_value
-                else:
-                    translate_value = translate(zh_value, "zh", tolan,translator)
+                #其他语言使用en翻译
+                if(tolan !="en"):
+                    zh_value = row.iloc[3]
+                translate_value = translate(zh_value, tolan,translator)
                 print(f"\t{tolan}:{translate_value}")
                 #写入到对应的cell中
                 df.at[index, lan] = translate_value
