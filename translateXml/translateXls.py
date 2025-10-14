@@ -1,17 +1,8 @@
-'''
-Author: lee 497232807@qq.com
-Date: 2025-08-27 09:45:50
-LastEditors: lee 497232807@qq.com
-LastEditTime: 2025-10-14 14:07:08
-FilePath: \多语言xml翻译\translateXls.py
-Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
-'''
 
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
 import os
-import sys
 import translators as ts
 import pandas as pd
 # https://github.com/UlionTse/translators
@@ -29,18 +20,19 @@ def translate(text, fromLan,toLan,translator):
 
 #翻译xls 
 def translateXls(xlsFile,translator):
-    df = pd.read_excel(xlsFile)
-    
+    df = pd.read_excel(xlsFile,dtype=object) #指定dtype为object，防止写入时报错
     #获取第一行第三列后面的数据
     firstRow = df.iloc[0]
     languages = firstRow.index[3:]
-        
+    
     # #遍历每一行第三列数据(en字符串)
     for index, row in df.iterrows():
         zh_value = row.iloc[2]
         code = row.iloc[0]
         print(f"translate:{zh_value}")
         for lan in languages:
+
+                
             #判断df.at[index, lan]中是否为空
             if pd.isna(df.at[index, lan]):
                 # print(lan)
@@ -62,8 +54,7 @@ def translateXls(xlsFile,translator):
     df.to_excel(xlsFile,engine="openpyxl",index=False)
 
 
-# 获取输入的参数作为翻译的语言
-args = sys.argv
+
 #翻译服务
 translateService = "bing"
 print("translateService:",translateService,ts.__version__)
