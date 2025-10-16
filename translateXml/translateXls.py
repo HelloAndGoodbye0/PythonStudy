@@ -1,4 +1,3 @@
-
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
@@ -12,6 +11,7 @@ import pandas as pd
 lanMap = {
     "tha":"th",
     "es_mx":"es",
+    "pt":"pt-PT"
 }
 #翻译文本
 def translate(text,toLan,translator):
