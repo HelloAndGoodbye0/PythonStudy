@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
@@ -53,7 +54,7 @@ def translateXls(xlsFile,translator):
         
     column_mapping = {col: col.split('.')[0] for col in df.columns}
     df.rename(columns=column_mapping, inplace=True)
-    df.to_excel(xlsFile,engine="openpyxl",index=False)
+    df.to_excel(xlsFile,engine="openpyxl",sheet_name=xlsFile.split(".")[0], index=False)
 
 
 
