@@ -15,3 +15,7 @@ docker pull garethflowers/svn-server
 
 docker run -d --restart=always --name my-svn-server  -v /home/svn:/var/opt/svn -p 3690:3690 garethflowers/svn-server
 
+
+
+## docker jenkins
+docker run -d --restart=always --name myJenkins -p 8080:8080 -p 50000:50000  -v F:\docker-jenkins:/var/jenkins_home jenkins/jenkins:2.528.2-lts-jdk21
