@@ -23,9 +23,16 @@ docker run -d --restart=always --name myJenkins -p 8080:8080 -p 50000:50000  -v 
 
 ### nginx
 //复制配置文件出来
-docker cp nginx:/etc/nginx/nginx.conf F:\docker-nignx
+docker cp nginx:/etc/nginx/conf.d F:\docker-nignx
 docker cp nginx:/usr/share/nginx/html/ F:\docker-nignx\html
 docker cp nginx:/var/log/nginx/ F:\docker-nignx\logs
+docker cp nginx:/etc/nginx/nginx.conf F:\docker-nignx
+
 
 //运行
-docker run -d --name nginx -p 8080:80  -v F:\docker-nignx\nginx.conf:/etc/nginx/nginx.conf -v F:\docker-nignx\html:/usr/share/nginx/html -v F:\docker-nignx\logs:/var/log/nginx  nginx:latest
+docker run -d --name nginx -p 8080:80 \  
+-v F:\docker-nignx\nginx.conf:/etc/nginx/nginx.conf \
+-v F:\docker-nignx\html:/usr/share/nginx/html \
+-v F:\docker-nignx\logs:/var/log/nginx \
+-v F:\docker-nignx\conf.d:/etc/nginx/conf.d \
+nginx:latest
