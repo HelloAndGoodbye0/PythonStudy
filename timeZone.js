@@ -56,16 +56,17 @@ function convertUtcTimeStampToTimeZone(utcTimestamp, timeZone = getCurrentTimeZo
 /**
  * 格式化本地时间为 YYYY-MM-DD HH:MM:SS
  * @param {Date} date 日期对象
- * @returns 格式化后的日期时间字符串 格式为YYYY-MM-DD HH:MM:SS
+ * @param {string} split 分割符 默认'-'
+ * @returns 格式化后的日期时间字符串 格式为YYYY${split}MM${split}DD HH:MM:SS
  */
-function formatLocalTime(date) {
+function formatLocalTime(date,split = '-') {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从0开始，需+1
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    return `${year}${split}${month}${split}${day} ${hours}:${minutes}:${seconds}`;
   }
 
 
@@ -81,4 +82,5 @@ console.log("convertUtcTimeStampToTimeZone():", convertUtcTimeStampToTimeZone(Da
 let utcTimestamp = Date.now();
 console.log("utcTimestamp:", utcTimestamp);
 let date = new Date(utcTimestamp);
-console.log("date:", formatLocalTime(date),date.toLocaleString());
+console.log("date:", formatLocalTime(date,'/'));
+console.log("date:", date.toLocaleString());
