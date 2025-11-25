@@ -74,6 +74,7 @@ function formatLocalTime(date) {
 console.log("getCurrentTimeZoneOffset():", getCurrentTimeZoneOffset());
 console.log("getCurrentTimeZone():",  getCurrentTimeZone());
 console.log("convertUtcTimeStampToTimeZone():", convertUtcTimeStampToTimeZone(Date.now(), "UTC+08:00"));
+console.log("convertUtcTimeStampToTimeZone():", convertUtcTimeStampToTimeZone(Date.now(), "UTC+09:00"));
 
 
 
