@@ -36,3 +36,18 @@ docker run -d --name nginx -p 8080:80 \
 -v F:\docker-nignx\logs:/var/log/nginx \
 -v F:\docker-nignx\conf.d:/etc/nginx/conf.d \
 nginx:latest
+
+
+
+--rm 参数：停止运行后自动删除容器
+
+### ubuntu
+docker run -d --name ubuntu-ssh -p 222:22  ubuntu-ssh
+
+### docker 提交镜像
+
+docker commit  -a "Lee" -m "remove openssh-client"  ubuntu unbntu-ssh:v3 
+
+docker commit  ubuntu1 ubuntu1
+
+docker run -it --rm unbntu-ssh:v3
