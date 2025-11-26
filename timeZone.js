@@ -11,6 +11,7 @@ function getCurrentTimeZoneOffset() {
 
 /**
  * 获取本地时区
+ * @returns 本地时区 格式为UTC+08:00或UTC-05:30
  */
 function getCurrentTimeZone() {
     const offset = -getCurrentTimeZoneOffset(); // 转换为正数（东时区为正）
@@ -23,7 +24,7 @@ function getCurrentTimeZone() {
 
 /**
  * 需要封装一个方法  把UTC时间戳转换为指定 时区显示的时间 格式为YYYY-MM-DD HH:MM:SS
- * @param {number} utcTimestamp UTC时间戳
+ * @param {number} utcTimestamp UTC时间戳 毫秒
  * @param {string} timeZone 时区 格式为UTC+08:00或UTC-05:30
  * @returns 指定时区的时间 格式为YYYY-MM-DD HH:MM:SS
  */
@@ -72,15 +73,10 @@ function formatLocalTime(date,split = '-') {
 
 
 
-console.log("getCurrentTimeZoneOffset():", getCurrentTimeZoneOffset());
-console.log("getCurrentTimeZone():",  getCurrentTimeZone());
-console.log("convertUtcTimeStampToTimeZone():", convertUtcTimeStampToTimeZone(Date.now(), "UTC+08:00"));
-console.log("convertUtcTimeStampToTimeZone():", convertUtcTimeStampToTimeZone(Date.now(), "UTC+09:00"));
-
-
-
 let utcTimestamp = Date.now();
 console.log("utcTimestamp:", utcTimestamp);
-let date = new Date(utcTimestamp);
-console.log("date:", formatLocalTime(date,'/'));
-console.log("date:", date.toLocaleString());
+console.log("getCurrentTimeZoneOffset():", getCurrentTimeZoneOffset());
+console.log("getCurrentTimeZone():",  getCurrentTimeZone());
+console.log("convertUtcTimeStampToTimeZone():", convertUtcTimeStampToTimeZone(utcTimestamp, getCurrentTimeZone()));
+
+
