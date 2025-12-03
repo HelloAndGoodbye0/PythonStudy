@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import '../screens/cart_screen.dart';
@@ -44,7 +45,7 @@ class ProductsOverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter 商城'),
+        title: Text(AppLocalizations.of(context)!.helloWorld('Flutter')),
         actions: [
           // 购物车图标，带角标
           Consumer<CartProvider>(
