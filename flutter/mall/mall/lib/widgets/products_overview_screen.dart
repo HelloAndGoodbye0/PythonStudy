@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
+import '../providers/locale_provider.dart';
 import '../screens/cart_screen.dart';
 import 'product_item.dart';
 
@@ -45,8 +46,26 @@ class ProductsOverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.helloWorld('Flutter')),
+        title: Text(AppLocalizations.of(context)!.helloWorld('Flutter Mall')),
         actions: [
+          // 语言切换菜单
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.language),
+            onSelected: (value) {
+              if (value == 'en') {
+                Provider.of<LocaleProvider>(context, listen: false).setLocale(const Locale('en'));
+              } else if (value == 'zh') {
+                Provider.of<LocaleProvider>(context, listen: false).setLocale(const Locale('zh'));
+              } else if (value == 'system') {
+                Provider.of<LocaleProvider>(context, listen: false).clearLocale();
+              }
+            },
+            itemBuilder: (ctx) => const [
+              PopupMenuItem(value: 'en', child: Text('English')),
+              PopupMenuItem(value: 'zh', child: Text('中文')),
+              PopupMenuItem(value: 'system', child: Text('跟随系统')),
+            ],
+          ),
           // 购物车图标，带角标
           Consumer<CartProvider>(
             builder: (_, cart, ch) => Badge(
@@ -57,6 +76,7 @@ class ProductsOverviewScreen extends StatelessWidget {
               icon: const Icon(Icons.shopping_cart),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const CartScreen()));
+          
               },
             ),
           ),
