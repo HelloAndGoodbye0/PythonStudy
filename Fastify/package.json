@@ -1,0 +1,21 @@
+{
+  "name": "fastify-ts-example",
+  "version": "1.0.0",
+  "description": "A simple Fastify TypeScript example",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "dev:watch": "nodemon --watch src --exec ts-node src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "fastify": "^4.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0",
+    "nodemon": "^3.0.0",
+    "ts-node": "^10.9.0"
+  }
+}
