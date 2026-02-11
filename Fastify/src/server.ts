@@ -1,9 +1,10 @@
-import Fastify from 'fastify';
+import Fastify, { FastifyReply, FastifyRequest } from 'fastify';
 import AutoLoad from '@fastify/autoload';
 import path from 'path';
 
 const fastify = Fastify({
-  logger: true
+  logger: true,
+  exposeHeadRoutes: false
 });
 
 // 首页路由
@@ -16,20 +17,17 @@ fastify.register(AutoLoad, {
   dir: path.join(__dirname, 'routes')
 });
 
+// 监听 fastify 的钩子，查看加载了哪些文件
+fastify.addHook('onRoute', (routeOptions) => {
+  console.log('Registered route:', routeOptions.method, routeOptions.url);
+});
+
+
 // 启动服务器
 const start = async () => {
   try {
     await fastify.listen({ port: 3000, host: '0.0.0.0' });
     console.log(' 服务器运行在 http://localhost:3000');
-    console.log(' 可用的路由:');
-    console.log('   GET  /');
-    console.log('   GET  /users');
-    console.log('   POST /users');
-    console.log('   GET  /users/:id');
-    console.log('   PUT  /users/:id');
-    console.log('   DELETE /users/:id');
-    console.log('   GET  /posts');
-    console.log('   POST /posts\n');
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
