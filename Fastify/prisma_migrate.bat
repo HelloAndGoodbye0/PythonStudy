@@ -1,2 +1,4 @@
-npx prisma migrate dev
-npx prisma generate
+call npx prisma migrate dev
+call npx prisma generate
+
+pause
