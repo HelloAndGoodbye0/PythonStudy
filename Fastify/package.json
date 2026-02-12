@@ -10,13 +10,20 @@
     "start": "node dist/server.js"
   },
   "dependencies": {
-    "fastify": "^4.24.0",
-    "@fastify/autoload": "^5.7.0"
+    "@fastify/autoload": "^5.7.0",
+    "@prisma/adapter-better-sqlite3": "^7.4.0",
+    "@prisma/client": "^7.4.0",
+    "dotenv": "^17.2.4",
+    "fastify": "^4.29.1",
+    "fastify-plugin": "^5.1.0"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
-    "typescript": "^5.3.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^20.19.33",
     "nodemon": "^3.0.0",
-    "ts-node": "^10.9.0"
+    "prisma": "^7.4.0",
+    "ts-node": "^10.9.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

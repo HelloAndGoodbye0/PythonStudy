@@ -1,11 +1,15 @@
 import Fastify, { FastifyReply, FastifyRequest } from 'fastify';
 import AutoLoad from '@fastify/autoload';
 import path from 'path';
+import prismaPlugin from './plugins/prisma';
 
 const fastify = Fastify({
   logger: true,
   exposeHeadRoutes: false
 });
+
+//注册prisma插件
+fastify.register(prismaPlugin);
 
 // 首页路由
 fastify.get('/', async (request, reply) => {

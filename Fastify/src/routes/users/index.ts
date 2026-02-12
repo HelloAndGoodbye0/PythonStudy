@@ -1,31 +1,36 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-console.log('users/index.ts');
 export default async function (fastify: FastifyInstance) {
   // GET /users
   fastify.get('/', async (request: FastifyRequest, reply: FastifyReply) => {
-    return {
-      status: 'success',
-      data: [
-        { id: 1, name: '用户1', email: 'user1@example.com' },
-        { id: 2, name: '用户2', email: 'user2@example.com' }
-      ]
-    };
+    return fastify.prisma.user.findMany();
   });
 
   // POST /users
-  fastify.post('/', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.post('/', {
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          email: { type: 'string' }
+        },
+        required: ['name', 'email']
+      }
+    }
+  }, async (request: FastifyRequest, reply: FastifyReply) => {
     const body = request.body as { name: string; email: string };
+    console.log(body);
+    const newUser = await fastify.prisma.user.create({
+      data: { email: body.email, name: body.name }
+    });
     return {
       status: 'success',
       message: '用户创建成功',
-      data: {
-        id: 3,
-        ...body
-      }
-    };
+      data: newUser
+    }
   });
 
-   // GET /users/:id
+  // GET /users/:id
   fastify.get('/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     return {

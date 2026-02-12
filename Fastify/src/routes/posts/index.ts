@@ -13,7 +13,18 @@ export default async function (fastify: FastifyInstance) {
   });
 
   // POST /posts
-  fastify.post('/', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.post('/', {
+    schema:{
+      body:{
+        type: 'object',
+        required: ['title', 'content'],
+        properties: {
+          title: { type: 'string' },
+          content: { type: 'string' }
+        }
+      }
+    }
+  },async (request: FastifyRequest, reply: FastifyReply) => {
     const body = request.body as { title: string; content: string };
     return {
       status: 'success',

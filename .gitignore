@@ -57,3 +57,4 @@ salaryEmail/sendSalaryEmail.spec
 protoTool/node_modules/
 protoTool/package-lock.json
 Fastify/node_modules/
+Fastify/dist/
