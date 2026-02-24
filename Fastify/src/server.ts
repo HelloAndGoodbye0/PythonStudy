@@ -1,15 +1,26 @@
 import Fastify, { FastifyReply, FastifyRequest } from 'fastify';
 import AutoLoad from '@fastify/autoload';
+import fastifyStatic from '@fastify/static';
 import path from 'path';
 import prismaPlugin from './plugins/prisma';
+import websocket from '@fastify/websocket'
 
 const fastify = Fastify({
   logger: true,
   exposeHeadRoutes: false
 });
 
+// 注册 WebSocket 插件
+fastify.register(websocket)
+
 //注册prisma插件
 fastify.register(prismaPlugin);
+
+// 注册静态文件服务
+fastify.register(fastifyStatic, {
+  root: path.join(__dirname, '..', 'public'),
+  prefix: '/public/'
+});
 
 // 首页路由
 fastify.get('/', async (request, reply) => {
