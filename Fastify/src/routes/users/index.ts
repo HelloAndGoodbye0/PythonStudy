@@ -1,5 +1,4 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { console } from 'node:inspector';
 /**
  * 用户路由模块
  * 该模块定义了用户相关的API路由，包括获取用户列表、创建用户、获取单个用户、更新用户和删除用户等功能
@@ -25,7 +24,6 @@ export default async function (fastify: FastifyInstance) {
     }
   }, async (request: FastifyRequest, reply: FastifyReply) => {
     const body = request.body as { name: string; email: string };
-    console.log(body);
     const newUser = await fastify.prisma.user.create({
       data: { email: body.email, name: body.name }
     });
