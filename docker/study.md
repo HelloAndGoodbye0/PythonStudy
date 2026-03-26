@@ -41,8 +41,26 @@ nginx:latest
 
 --rm 参数：停止运行后自动删除容器
 
-### ubuntu
-docker run -d --name ubuntu-ssh -p 222:22  ubuntu-ssh
+### ubuntu  ssh 安装
+docker run --hostname=963f40483d5d --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --network=bridge -p 80:80 --restart=no --label='org.opencontainers.image.ref.name=ubuntu' --label='org.opencontainers.image.version=24.04' --runtime=runc -t -d ubuntu
+1 运行
+docker run -itd --name my-ubuntu -p 22:22 ubuntu
+
+docker run -itd --name my-ubuntu1 --privileged=true -p 22:22 ubuntu 
+# 安装 SSH 服务
+apt-get update
+apt-get install -y openssh-server
+
+# 设置 root 密码
+passwd root
+
+# 修改 SSH 配置允许 root 登录
+sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# 启动 SSH 服务
+service ssh start
+
+
 
 ### docker 提交镜像
 
