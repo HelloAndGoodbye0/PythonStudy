@@ -77,6 +77,10 @@ app.get('/health', (c) => {
   return c.json({ status: 'ok' })
 })
 
+// 挂载路由
+import routes from './routes/index.js'
+app.route('/', routes)
+
 // 404 处理
 app.notFound((c) => {
   winstonLogger.warn(`404 Not Found: ${c.req.method} ${c.req.path}`)
