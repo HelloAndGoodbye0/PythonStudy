@@ -86,7 +86,7 @@ app.get('/', (c) => {
   return c.json({
     message: 'Hello Hono!',
     status: 'running',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toLocaleString()
   })
 })
 
