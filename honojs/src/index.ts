@@ -5,6 +5,8 @@ import { logger } from 'hono/logger'
 import { createLogger, transports, format } from 'winston'
 import fs from 'fs'
 import path from 'path'
+import routes from './routes/index.js'
+import { serveStatic } from '@hono/node-server/serve-static'
 
 // 创建日志目录
 const logsDir = path.join(process.cwd(), 'logs')
@@ -80,6 +82,10 @@ const app = new Hono()
 app.use('*', cors())
 app.use('*', logger())
 app.use('*', fileLogger)
+//静态资源访问
+app.use('/static/*', serveStatic({
+  root: './public'
+}))
 
 // 健康检查
 app.get('/', (c) => {
@@ -95,7 +101,7 @@ app.get('/health', (c) => {
 })
 
 // 挂载路由
-import routes from './routes/index.js'
+
 app.route('/', routes)
 
 // 404 处理
