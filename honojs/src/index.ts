@@ -82,10 +82,8 @@ const app = new Hono()
 app.use('*', cors())
 app.use('*', logger())
 app.use('*', fileLogger)
-//静态资源访问
-app.use('/static/*', serveStatic({
-  root: './public'
-}))
+// 将 /static/* 路径映射到 ./public 文件夹
+app.use('/static/*', serveStatic({ root: './public' }))
 
 // 健康检查
 app.get('/', (c) => {
@@ -96,9 +94,7 @@ app.get('/', (c) => {
   })
 })
 
-app.get('/health', (c) => {
-  return c.json({ status: 'ok' })
-})
+
 
 // 挂载路由
 
