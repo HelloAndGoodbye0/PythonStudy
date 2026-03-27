@@ -48,13 +48,30 @@ const fileLogger = async (c: any, next: any) => {
   const start = Date.now()
   const method = c.req.method
   const path = c.req.path
+  const queryParams = c.req.query()
+  const body = method !== 'GET' ? await c.req.json().catch(() => null) : null
   
   await next()
   
   const duration = Date.now() - start
   const status = c.res.status
   
-  winstonLogger.info(`${method} ${path} ${status} - ${duration}ms`)
+  const logData: any = {
+    method,
+    path,
+    status,
+    duration: `${duration}ms`
+  }
+  
+  if (Object.keys(queryParams).length > 0) {
+    logData.query = queryParams
+  }
+  
+  if (body) {
+    logData.body = body
+  }
+  
+  winstonLogger.info(JSON.stringify(logData))
 }
 
 const app = new Hono()
