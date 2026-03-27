@@ -82,17 +82,9 @@ const app = new Hono()
 app.use('*', cors())
 app.use('*', logger())
 app.use('*', fileLogger)
-// 将 /static/* 路径映射到 ./public 文件夹
-app.use('/static/*', serveStatic({ root: './public' }))
+// 将 public 目录作为静态文件服务器
+app.use('/public/*', serveStatic({ root: './'}))
 
-// 健康检查
-app.get('/', (c) => {
-  return c.json({
-    message: 'Hello Hono!',
-    status: 'running',
-    timestamp: new Date().toLocaleString()
-  })
-})
 
 
 
