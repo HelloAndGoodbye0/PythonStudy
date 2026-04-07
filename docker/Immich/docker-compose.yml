@@ -1,0 +1,26 @@
+services:
+  immich-server:
+    image: ghcr.io/immich-app/immich-server:release
+    ports:
+      - "2283:2283"
+    volumes:
+      - f:/immich/photos:/usr/src/app/upload
+    environment:
+      DB_PASSWORD: yourpassword
+      DB_USERNAME: postgres
+      DB_DATABASE_NAME: immich
+    depends_on:
+      - redis
+      - database
+
+  redis:
+    image: redis:6.2-alpine
+
+  database:
+    image: tensorchord/pgvecto-rs:pg14-v0.2.0
+    environment:
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_USER: postgres
+      POSTGRES_DB: immich
+    volumes:
+      - f:/immich/pgdata:/var/lib/postgresql/data
