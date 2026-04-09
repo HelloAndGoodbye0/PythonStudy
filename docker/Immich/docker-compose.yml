@@ -1,6 +1,7 @@
 services:
   immich-server:
     image: ghcr.io/immich-app/immich-server:release
+    container_name: immich-server
     ports:
       - "2283:2283"
     volumes:
@@ -9,18 +10,36 @@ services:
       DB_PASSWORD: yourpassword
       DB_USERNAME: postgres
       DB_DATABASE_NAME: immich
+      REDIS_HOSTNAME: redis
     depends_on:
-      - redis
-      - database
+      redis:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+    restart: unless-stopped
 
   redis:
     image: redis:6.2-alpine
+    container_name: immich-redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   database:
     image: tensorchord/pgvecto-rs:pg14-v0.2.0
+    container_name: immich-database
     environment:
       POSTGRES_PASSWORD: yourpassword
       POSTGRES_USER: postgres
       POSTGRES_DB: immich
     volumes:
       - f:/immich/pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
