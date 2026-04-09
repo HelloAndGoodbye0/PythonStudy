@@ -19,7 +19,7 @@ docker run -d --restart=always --name my-svn-server  -v /home/svn:/var/opt/svn -
 
 ## docker jenkins
 docker run -d --restart=always --name myJenkins -p 8080:8080 -p 50000:50000  -v F:\docker-jenkins:/var/jenkins_home jenkins/jenkins:2.528.2-lts-jdk21
-
+docker run -d --restart=always --name JenkinsLatest -p 8080:8080 -p 50000:50000  -v F:\docker-jenkins:/var/jenkins_home jenkins/jenkins:latest
 
 ### nginx
 //复制配置文件出来
