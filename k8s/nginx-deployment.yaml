@@ -1,0 +1,75 @@
+# ============================================
+# Deployment 配置
+# 作用：管理 Pod 的部署和更新，确保指定数量的 Pod 副本运行
+# 功能：支持滚动更新、自动扩缩容、故障自愈
+# ============================================
+apiVersion: apps/v1              # API 版本，apps/v1 用于 Deployment 等控制器资源
+kind: Deployment                 # 资源类型：部署控制器
+metadata:                        # 元数据部分
+  name: nginx-deployment         # Deployment 的名称
+  namespace: nginx-app           # 所属命名空间，必须在 nginx-ns.yaml 创建后才能部署
+  labels:                        # 标签，用于标识和选择这个 Deployment
+    app: nginx                   # 应用名称标签
+    version: v1                  # 版本标签，用于区分不同版本
+
+spec:                            # 规格说明，定义期望状态
+  replicas: 2                    # Pod 副本数量，保持 2 个实例运行（高可用）
+
+  # --- 选择器配置 ---
+  selector:
+    matchLabels:                 # 标签选择器，用于匹配管理的 Pod
+      app: nginx                 # 只管理带有 app=nginx 标签的 Pod
+
+  # --- 更新策略 ---
+  strategy:
+    type: RollingUpdate          # 滚动更新策略（另一种：Recreate 先删后建）
+    rollingUpdate:               # 滚动更新参数
+      maxSurge: 1                # 更新时最多可超出的 Pod 数量（可额外创建 1 个新 Pod）
+      maxUnavailable: 0          # 更新时最多不可用的 Pod 数量（0 表示始终保证全部可用）
+
+  # --- Pod 模板 ---
+  template:                      # 定义创建的 Pod 模板
+    metadata:                    # Pod 的元数据
+      labels:                    # Pod 的标签，必须和 selector.matchLabels 匹配
+        app: nginx               # 与上面 selector 一致，Deployment 才能管理这些 Pod
+        version: v1              # 版本标识
+    spec:                        # Pod 的规格说明
+      containers:                # 容器列表，一个 Pod 可包含多个容器
+        - name: nginx            # 容器名称
+          image: nginx:latest    # 容器镜像（建议生产环境使用固定版本如 nginx:1.25）
+          imagePullPolicy: IfNotPresent  # 镜像拉取策略：本地有则不拉取
+
+          # --- 端口配置 ---
+          ports:
+            - name: http         # 端口名称，可被其他配置引用
+              containerPort: 80  # 容器内部暴露的端口（nginx 默认 80 端口）
+              protocol: TCP      # 协议类型
+
+          # --- 资源限制 ---
+          resources:             # CPU 和内存资源配置
+            requests:            # 资源请求：调度时保证节点至少有这些资源
+              cpu: 100m          # 100 毫核 = 0.1 个 CPU 核心
+              memory: 128Mi      # 128 MiB 内存
+            limits:              # 资源限制：容器最多可使用这么多资源
+              cpu: 500m          # 最多 0.5 个 CPU 核心
+              memory: 256Mi      # 最多 256 MiB 内存
+
+          # --- 健康检查：存活探针 ---
+          livenessProbe:         # 检测容器是否存活，失败则重启容器
+            httpGet:             # HTTP GET 方式检测
+              path: /            # 访问根路径
+              port: http         # 使用上面定义的 http 端口（80）
+            initialDelaySeconds: 10  # 容器启动后 10 秒开始检测
+            periodSeconds: 10    # 每 10 秒检测一次
+            timeoutSeconds: 1    # 检测超时时间 1 秒
+            failureThreshold: 3  # 连续失败 3 次认为容器不健康，触发重启
+
+          # --- 健康检查：就绪探针 ---
+          readinessProbe:        # 检测容器是否就绪，失败则从 Service 端点移除
+            httpGet:
+              path: /            # 访问根路径
+              port: http         # 使用 80 端口
+            initialDelaySeconds: 5   # 容器启动后 5 秒开始检测
+            periodSeconds: 5     # 每 5 秒检测一次
+            timeoutSeconds: 1    # 检测超时时间 1 秒
+            failureThreshold: 3  # 连续失败 3 次认为未就绪，不接收流量
