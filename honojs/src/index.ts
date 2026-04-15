@@ -91,7 +91,7 @@ app.use('/public/*', serveStatic({ root: './'}))
 // 挂载路由
 
 app.route('/', routes)
-
+app.get('/', (c) => c.text('Hello Hono!'))
 // 404 处理
 app.notFound((c) => {
   winstonLogger.warn(`404 Not Found: ${c.req.method} ${c.req.path}`)
@@ -105,7 +105,7 @@ app.onError((err: Error, c: any) => {
 })
 
 // 启动服务器
-const port = parseInt(process.env.PORT || '3000')
+const port = parseInt(process.env.PORT || '3001')
 
 serve({
   fetch: app.fetch,
