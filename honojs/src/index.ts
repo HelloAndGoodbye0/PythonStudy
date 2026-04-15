@@ -5,7 +5,7 @@ import { logger } from 'hono/logger'
 import { createLogger, transports, format } from 'winston'
 import fs from 'fs'
 import path from 'path'
-import routes from './routes/index.js'
+import routes from './routes/index'
 import { serveStatic } from '@hono/node-server/serve-static'
 
 // 创建日志目录
