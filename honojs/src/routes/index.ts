@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
-import userRouter from './user/index'
-import authRouter from './auth/index'
+import userRouter from './user/index.js'
+import authRouter from './auth/index.js'
 
 const routes = new Hono()
 

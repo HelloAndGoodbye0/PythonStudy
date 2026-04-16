@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
-import { loginSchema, registerSchema, AuthUser, LoginResponse, RegisterResponse } from '../../types/auth'
+import { loginSchema, registerSchema, AuthUser, LoginResponse, RegisterResponse } from '../../types/auth.js'
 
 const authRouter = new Hono()
 
