@@ -23,7 +23,7 @@ if image is None:
     sys.exit(1)
 
 results = catcher(image)
-
+print(results)
 for plate in results:
-    print(f"车牌号: {plate[0]},  置信度: {plate[1]:.2f},  位置: {plate[2]}")
+    print(f"车牌号: {plate[0]},  置信度: {plate[1]:.2f},  type: {plate[2]}  位置: {plate[3]}")
 
