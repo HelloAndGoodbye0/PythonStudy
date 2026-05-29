@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # SVN 服务 (保持 HTTP 协议)
+  svn-server:
+    image: elleflorio/svn-server:latest  # 使用的镜像
+    container_name: svn-server
+    restart: always
+    volumes:
+      - ./svn_repo:/home/svn          # 挂载仓库目录
+      - ./svn_config:/etc/subversion  # 挂载配置文件目录
+    networks:
+      - svn-net
+    # 注意：这里没有映射 ports，意味着它只对内部网络暴露 80 端口，外部无法直接访问
+
+  # Nginx 反向代理 (处理 HTTPS)
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"      # 映射 HTTP 端口
+      - "443:443"    # 映射 HTTPS 端口
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro  # 挂载 Nginx 配置
+      - ./nginx/ssl:/etc/nginx/ssl:ro        # 挂载 SSL 证书
+    networks:
+      - svn-net
+    depends_on:
+      - svn-server
+
+# 定义内部网络，使两个服务可以互相通信
+networks:
+  svn-net:
+    driver: bridge
