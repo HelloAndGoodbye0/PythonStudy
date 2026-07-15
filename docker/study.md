@@ -69,3 +69,17 @@ docker commit  -a "Lee" -m "remove openssh-client"  ubuntu unbntu-ssh:v3
 docker commit  ubuntu1 ubuntu1
 
 docker run -it --rm unbntu-ssh:v3
+
+
+
+### mattermost部署文档
+https://docs.mattermost.com/deployment-guide/server/deploy-containers.html
+
+至少修改.env文件中的DOMAIN为localhost
+
+在matermost目录下面执行 
+
+docker compose -f docker-compose.yml -f docker-compose.without-nginx.yml up -d
+
+
+然后访问 http://localhost:8065 即可看到
