@@ -18,5 +18,5 @@ services:
     volumes:
       - ./data:/data
     ports:
-      - "3000:3000"
+      - "8001:3000"
       - "22:22"
